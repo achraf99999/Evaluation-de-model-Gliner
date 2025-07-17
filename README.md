@@ -1,9 +1,12 @@
-🚀 Aperçu du Projet : Analyse de l'Extraction d'Entités avec GLiNER
-Ce dépôt contient un projet d'analyse de l'extraction d'entités, exploitant le modèle GLiNER. Il explore différentes stratégies de prédiction (par synonyme individuel et par combinaisons de synonymes) et évalue leur performance via l'union et l'intersection des segments prédits. Le projet analyse également le chevauchement entre ces prédictions.
+# Projet d'Évaluation d'Entités GLiNER
 
-📂 Structure du Projet
-Le projet est organisé de manière logique pour faciliter la navigation et la compréhension :
+Ce README fournit un aperçu de la structure du projet et de la fonction de chaque fichier.
 
+## Structure du Projet
+
+Le projet est organisé comme suit :
+
+```
 .
 ├── src/
 │   ├── config.py
@@ -23,84 +26,127 @@ Le projet est organisé de manière logique pour faciliter la navigation et la c
 │   ├── debug_by_synonym.json
 │   ├── debug_combinations.json
 │   ├── results_intersection/
-│   │   └── ... (métriques (csv) et graphiques pour l'intersection (png))
+│   │   └── ... (métriques(csv) et graphiques pour l'intersection(png))
 │   ├── results_union/
-│   │   └── ... (métriques (csv) et graphiques pour l'union (png))
+│   │   └── ... (métriques(csv) et graphiques pour l'union)
 │   └── overlap_analysis/
 │       ├── synonym_level/
-│       │   └── ... (matrices (csv) et matrices de Jaccard pour le chevauchement par synonyme (png))
+│       │   └── ... (matrices(csv) et matrices de Jaccard pour le chevauchement par synonyme(png))
 │       └── synonym_COMBINATIONS/
 │           └── combinations/
-│               └── ... (matrices et cartes de chaleur de Jaccard pour le chevauchement par combinaison (png))
+│               └── ... (matrices et cartes de chaleur de Jaccard pour le chevauchement par combinaison)
 └── README.md
+```
 
-📖 Description des Fichiers Clés
-Chaque composant du projet a un rôle spécifique :
+## Description des Fichiers
 
-src/config.py : ⚙️ Le cœur de la configuration ! Ce fichier centralise tous les paramètres globaux du projet. Vous y trouverez les types d'entités et leurs synonymes, les chemins d'accès aux données, le nom du modèle GLiNER, et les seuils par défaut pour la prédiction et la similarité de Jaccard.
+### 📁 Répertoire `src/`
 
-src/utils.py : 🛠️ Une boîte à outils essentielle. Ce fichier regroupe des fonctions d'aide utilisées à travers tous les scripts. Il contient des utilitaires pour charger des données JSON, initialiser le modèle GLiNER, et calculer des métriques clés comme l'indice de Jaccard, la précision, le rappel et le score F1.
+#### `config.py`
+Centralise toutes les configurations globales du projet. Il définit :
+- Les types d'entités et leurs synonymes
+- Les chemins d'accès aux fichiers d'entrée et de sortie
+- Le nom du modèle GLiNER
+- Les seuils par défaut pour la prédiction et la similarité de Jaccard
 
-src/predict_by_synonym.py : 🎯 Prédire par synonyme individuel. Ce script utilise GLiNER pour prédire les entités pour chaque synonyme défini dans config.py. Les résultats bruts (ID de texte, segment, texte de l'entité, étiquette) sont stockés dans outputs/debug_by_synonym.json.
+#### `utils.py`
+Contient des fonctions d'aide utilisées par les différents scripts :
+- Chargement des données JSON
+- Chargement du modèle GLiNER
+- Calcul de l'indice de Jaccard entre des ensembles
+- Calcul de la précision, du rappel et du score F1
 
-src/predict_combinations.py : 🧩 Prédire avec des combinaisons. Similaire au script précédent, celui-ci prédit les entités en exploitant des combinaisons de synonymes. Il parcourt toutes les associations possibles pour chaque type d'entité, sauvegardant les prédictions dans outputs/debug_combinations.json.
+#### `predict_by_synonym.py`
+Utilise le modèle GLiNER pour prédire des entités pour chaque synonyme individuel défini dans `config.py`. Les prédictions incluent :
+- `text_id`
+- Segment (span)
+- Texte de l'entité
+- Étiquette
 
-src/evaluate_union.py : 📈 Évaluation par l'union globale. Ce script évalue la performance des prédictions basées sur l'union des segments prédits par différentes combinaisons de synonymes. Il calcule précision, rappel et F1-score (correspondances exactes et partielles avec seuil de Jaccard), et génère les métriques (metrics_set_union.csv) et des graphiques sous outputs/results_union/.
+**Sortie :** `outputs/debug_by_synonym.json`
 
-src/evaluate_union_indiv.py : 📊 Contribution des synonymes individuels à l'union. Ce script évalue l'union des prédictions en se concentrant sur la contribution spécifique de chaque synonyme individuel. Les métriques et graphiques sont également sauvegardés dans le répertoire results_union.
+#### `predict_combinations.py`
+Similaire à `predict_by_synonym.py`, ce script prédit des entités en utilisant des combinaisons de synonymes. Il itère sur toutes les combinaisons possibles de synonymes pour chaque type d'entité.
 
-src/evaluate_intersection.py : 📉 Évaluation par l'intersection des prédictions. Ce script mesure la performance des prédictions basées sur l'intersection des segments prédits. Il calcule les mêmes métriques (précision, rappel, F1-score avec seuil de Jaccard), enregistrant les résultats dans outputs/results_intersection/metrics_set_intersections.csv et créant des graphiques.
+**Sortie :** `outputs/debug_combinations.json`
 
-src/overlap_by_synonym.py : 🤝 Analyse du chevauchement par synonyme. Ce script calcule l'indice de Jaccard pour quantifier le chevauchement entre les prédictions générées par des synonymes individuels pour chaque type d'entité. Il produit une matrice de similarité et une carte de chaleur, disponibles dans outputs/overlap_analysis/synonym_level/.
+#### `evaluate_union.py`
+Évalue la performance des prédictions d'entités basées sur l'**union** des segments (spans) prédits par différentes combinaisons de synonymes. 
 
-src/overlap_combinations.py : 🔗 Analyse du chevauchement par combinaisons. Ce script analyse le chevauchement entre les prédictions dérivées de différentes combinaisons de synonymes. Il génère des matrices de Jaccard et des cartes de chaleur que vous trouverez dans outputs/overlap_analysis/synonym_COMBINATIONS/combinations/.
+**Métriques calculées :**
+- Précision
+- Rappel
+- Score F1 (correspondances exactes et partielles utilisant un seuil de Jaccard)
 
-data/fulldata.json : 📥 Le jeu de données. Ce répertoire contient le jeu de données d'entrée utilisé pour toutes les opérations de prédiction et d'évaluation des entités.
+**Sorties :**
+- `outputs/results_union/metrics_set_union.csv`
+- Graphiques à barres
 
-dataf_factory/data.py : 🏭 Fabrique de données. Ce fichier est probablement utilisé pour la génération ou la manipulation de données d'entrée avant leur utilisation par les scripts principaux.
+#### `evaluate_union_indiv.py`
+Évalue également l'union des prédictions, en se concentrant spécifiquement sur la contribution des prédictions de synonymes individuels à l'union globale.
 
-outputs/ : 📦 Le dossier de tous les résultats. Ce répertoire contient tous les fichiers générés par l'exécution du projet :
+**Sorties :** Métriques et graphiques dans le répertoire `results_union`
 
-debug_by_synonym.json : Prédictions brutes pour chaque synonyme individuel.
+#### `evaluate_intersection.py`
+Évalue la performance des prédictions d'entités basées sur l'**intersection** des segments (spans) prédits par différentes combinaisons de synonymes.
 
-debug_combinations.json : Prédictions brutes pour chaque combinaison de synonymes.
+**Métriques calculées :**
+- Précision
+- Rappel
+- Score F1 (correspondances exactes et partielles avec un seuil de Jaccard)
 
-results_intersection/ : Fichiers CSV des métriques et graphiques pour les évaluations basées sur l'intersection.
+**Sorties :**
+- `outputs/results_intersection/metrics_set_intersections.csv`
+- Graphiques à barres
 
-results_union/ : Fichiers CSV des métriques et graphiques pour les évaluations basées sur l'union.
+#### `overlap_by_synonym.py`
+Analyse le chevauchement (en utilisant l'indice de Jaccard) entre les prédictions d'entités faites par des **synonymes individuels** pour chaque type d'entité.
 
-overlap_analysis/ : Sous-répertoires contenant les matrices de Jaccard et les cartes de chaleur pour l'analyse de chevauchement.
+**Sorties :**
+- Matrice de similarité de Jaccard
+- Carte de chaleur
+- Répertoire : `outputs/overlap_analysis/synonym_level/`
 
-🚀 Comment Démarrer
-Pour utiliser ce projet, suivez ces étapes :
+#### `overlap_combinations.py`
+Calcule l'indice de Jaccard pour mesurer le chevauchement entre les prédictions dérivées de **différentes combinaisons de synonymes** pour chaque type d'entité.
 
-Cloner le dépôt :
+**Sorties :**
+- Matrice de Jaccard
+- Carte de chaleur
+- Répertoire : `outputs/overlap_analysis/synonym_COMBINATIONS/combinations/`
 
-git clone https://github.com/votre-utilisateur/votre-projet.git
-cd votre-projet
+### 📁 Répertoire `data/`
 
-(Remplacez votre-utilisateur/votre-projet par le chemin réel de votre dépôt.)
+#### `fulldata.json`
+Ensemble de données d'entrée utilisé pour la prédiction et l'évaluation des entités.
 
-Installer les dépendances : (Assurez-vous d'avoir Python installé)
+### 📁 Répertoire `dataf_factory/`
 
-pip install -r requirements.txt # Si vous avez un fichier requirements.txt
-# Ou installez manuellement les bibliothèques comme transformers, scikit-learn, matplotlib, pandas, etc.
+#### `data.py`
+Script de traitement des données d'entrée pour la prédiction et l'évaluation des entités.
 
-Exécuter les scripts :
-Vous pouvez exécuter les scripts dans l'ordre pour générer les prédictions, les évaluations et les analyses de chevauchement. Par exemple :
+### 📁 Répertoire `outputs/`
 
-python src/predict_by_synonym.py
-python src/predict_combinations.py
-python src/evaluate_union.py
-# ... et ainsi de suite
+Ce répertoire stocke tous les fichiers de sortie générés :
 
-N'oubliez pas de configurer vos chemins et paramètres dans src/config.py avant de lancer les scripts.
+- **`debug_by_synonym.json`** : Prédictions brutes pour chaque synonyme individuel
+- **`debug_combinations.json`** : Prédictions brutes pour chaque combinaison de synonymes
+- **`results_intersection/`** : Fichiers CSV des métriques d'évaluation et graphiques à barres pour les évaluations basées sur l'intersection
+- **`results_union/`** : Fichiers CSV des métriques d'évaluation et graphiques à barres pour les évaluations basées sur l'union
+- **`overlap_analysis/`** : Sous-répertoires avec des matrices de Jaccard et des cartes de chaleur illustrant le chevauchement entre les prédictions au niveau des synonymes et des combinaisons
 
-🤝 Contribution
-Les contributions sont les bienvenues ! Si vous souhaitez améliorer ce projet, n'hésitez pas à ouvrir une issue ou à soumettre une pull request.
+## 🚀 Utilisation
 
-📄 Licence
-Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails. (N'oubliez pas de créer ce fichier si vous n'en avez pas encore un !)
+[Ajoutez ici les instructions d'installation et d'utilisation du projet]
 
-📧 Contact
-Pour toute question ou suggestion, n'hésitez pas à me contacter : votre.email@example.com (N'oubliez pas de remplacer ceci par votre adresse email !)
+## 📋 Prérequis
+
+[Listez ici les dépendances et prérequis nécessaires]
+
+## 🤝 Contribution
+
+[Ajoutez ici les guidelines pour contribuer au projet]
+
+## 📄 Licence
+
+[Ajoutez ici les informations de licence]

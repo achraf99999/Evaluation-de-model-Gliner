@@ -174,21 +174,11 @@ Scripts de transformation et préparation des données :
 
 ### **Prérequis**
 ```bash
-Python 3.8+
+Python 3.9.11
 pip install -r requirements.txt
 ```
 
-### **Dépendances Principales**
-```
-torch>=1.9.0
-transformers>=4.20.0
-numpy>=1.21.0
-pandas>=1.3.0
-matplotlib>=3.5.0
-seaborn>=0.11.0
-scikit-learn>=1.0.0
-gliner>=0.1.0
-```
+
 
 ### **Utilisation**
 

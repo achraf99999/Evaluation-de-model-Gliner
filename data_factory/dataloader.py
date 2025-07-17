@@ -54,7 +54,7 @@ def build_split(split_dir: Path, output_json: Path):
     for file_id, ann_path in ann_files.items():
         txt_path = txt_files.get(file_id)
         if not txt_path:
-            print(f"⚠️  .ann sans .txt → ignoré : {ann_path.name}")
+            print(f"  .ann sans .txt → ignoré : {ann_path.name}")
             continue
 
         text = txt_path.read_text(encoding="utf-8")
@@ -84,7 +84,7 @@ def main():
     for split in _SUBSETS:
         split_dir = args.root / split
         if not split_dir.exists():
-            print(f"⚠️  Dossier absent : {split_dir}")
+            print(f"  Dossier absent : {split_dir}")
             continue
         build_split(split_dir,
                     split_dir / _OUT_TMPL.format(split=split))

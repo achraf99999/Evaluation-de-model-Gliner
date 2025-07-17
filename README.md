@@ -1,152 +1,275 @@
-# Projet d'Évaluation d'Entités GLiNER
+# 🔬 Projet d'Évaluation et d'Amélioration du Modèle GLiNER
 
-Ce README fournit un aperçu de la structure du projet et de la fonction de chaque fichier.
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![GLiNER](https://img.shields.io/badge/GLiNER-Model-green.svg)](https://github.com/urchade/GLiNER)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## Structure du Projet
+## 📋 Description
 
-Le projet est organisé comme suit :
+Ce projet présente une **évaluation complète et des méthodologies d'amélioration** pour le modèle GLiNER (Generalist and Lightweight model for Named Entity Recognition). Il comprend des analyses quantitatives et qualitatives approfondies, des techniques d'amélioration du modèle, et la construction d'une base de données de connaissances enrichie.
+
+###  Objectifs Principaux
+
+- **Évaluation multi-dimensionnelle** du modèle GLiNER avec différentes stratégies de synonymes
+- **Analyse comparative** des performances (intersection vs union des prédictions)
+- **Amélioration du modèle** via fine-tuning et changement d'encodeur
+- **Construction d'une base de données** de connaissances enrichie par LLM
+- **Documentation complète** des méthodologies et résultats
+
+##  Structure du Projet
 
 ```
-.
-├── src/
-│   ├── config.py
-│   ├── utils.py
-│   ├── evaluate_intersection.py
-│   ├── evaluate_union.py
-│   ├── evaluate_union_indiv.py
-│   ├── predict_by_synonym.py
-│   ├── predict_combinations.py
-│   ├── overlap_by_synonym.py
-│   └── overlap_combinations.py
-├── data/
-│   └── fulldata.json
-├── dataf_factory/
-│   └── data.py
-├── outputs/
-│   ├── debug_by_synonym.json
-│   ├── debug_combinations.json
-│   ├── results_intersection/
-│   │   └── ... (métriques(csv) et graphiques pour l'intersection(png))
-│   ├── results_union/
-│   │   └── ... (métriques(csv) et graphiques pour l'union)
-│   └── overlap_analysis/
-│       ├── synonym_level/
-│       │   └── ... (matrices(csv) et matrices de Jaccard pour le chevauchement par synonyme(png))
-│       └── synonym_COMBINATIONS/
-│           └── combinations/
-│               └── ... (matrices et cartes de chaleur de Jaccard pour le chevauchement par combinaison)
-└── README.md
+📁 Evaluation-de-model-Gliner/
+├── 📁 src/                          # Pipeline d'évaluation principal
+│   ├── 📄 config.py                 # Configuration globale
+│   ├── 📄 utils.py                  # Fonctions utilitaires
+│   ├── 📄 evaluate_intersection.py  # Évaluation par intersection
+│   ├── 📄 evaluate_union.py         # Évaluation par union
+│   ├── 📄 evaluate_union_indiv.py   # Évaluation union individuelle
+│   ├── 📄 predict_by_synonym.py     # Prédiction par synonymes
+│   ├── 📄 predict_combinations.py   # Prédiction par combinaisons
+│   ├── 📄 overlap_by_synonym.py     # Analyse chevauchement synonymes
+│   └── 📄 overlap_combinations.py   # Analyse chevauchement combinaisons
+├── 📁 data/                         # Données d'entrée
+│   └── 📄 fulldata.json            # Dataset principal
+│   └── 📄 BioASQ_BIONNE_test_2024.zip
+│   └── 📄 BioASQ_BIONNE_training_2024.zip
+│   └── 📄 Fine-Tuning-dataset-def.json
+│   └── 📄 Fine-Tuning-dataset-entity.json
+├── 📁 data_factory/                 # Transformation des données
+│   └── 📄 dataloader-veritée-terrain.py                  # Scripts de préparation
+│   └── 📄 entitie-to-def.py
+│   └── 📄 fndata.py
+├── 📁 outputs/                      # Résultats et métriques
+│   ├── 📄 debug_by_synonym.json    # Prédictions brutes (synonymes)
+│   ├── 📄 debug_combinations.json  # Prédictions brutes (combinaisons)
+│   ├── 📄 mlm_synonym_prediction_results.xlsx # Prédictions brutes (combinaisons)
+│   ├── 📁 results_intersection/     # Métriques intersection
+│   ├── 📁 results_union/           # Métriques union
+│   ├── 📁 entity_traces/           # Métriques union
+│   └── 📁 overlap_analysis/        # Analyses de chevauchement
+├── 📁 Conception_de_BD/            # Base de données de connaissances
+│   └── 📄 build_kb.py
+│   └── 📄 enrich_kb_with_llm.py
+│   └── 📄 knowledge_base.json
+│   └── 📄 knowledge_base_enriched.json
+
+├── 📁 changement-encodeur/         # Modification d'encodeur
+│   ├── 📄 GLiNER-MPnet.py
+│   ├── 📄 GlinerJina.py
+│   └── 📄 extract-weights-GLiNER.py
+│   └── 📄 main.py
+├── 📄 fine-tuning.ipynb           # Fine-tuning du modèle
+├── 📄 main.evaluation.py          # Pipeline d'évaluation complet
+├── 📄 requirements.txt            # Dépendances Python
+└── 📄 Rapport de fin d'année.pdf  # Rapport technique détaillé
 ```
 
-## Description des Fichiers
+##  Composants Principaux
 
-### 📁 Répertoire `src/`
+### 1. Pipeline d'Évaluation (`src/`)
 
-#### `config.py`
-Centralise toutes les configurations globales du projet. Il définit :
-- Les types d'entités et leurs synonymes
-- Les chemins d'accès aux fichiers d'entrée et de sortie
-- Le nom du modèle GLiNER
-- Les seuils par défaut pour la prédiction et la similarité de Jaccard
+#### **Configuration et Utilitaires**
+- **`config.py`** : Configuration centralisée (entités, synonymes, seuils, chemins)
+- **`utils.py`** : Fonctions de base (chargement données, calcul métriques, indice Jaccard)
 
-#### `utils.py`
-Contient des fonctions d'aide utilisées par les différents scripts :
-- Chargement des données JSON
-- Chargement du modèle GLiNER
-- Calcul de l'indice de Jaccard entre des ensembles
-- Calcul de la précision, du rappel et du score F1
+#### **Prédiction d'Entités**
+- **`predict_by_synonym.py`** : Prédictions avec synonymes individuels
+- **`predict_combinations.py`** : Prédictions avec combinaisons de synonymes
 
-#### `predict_by_synonym.py`
-Utilise le modèle GLiNER pour prédire des entités pour chaque synonyme individuel défini dans `config.py`. Les prédictions incluent :
-- `text_id`
-- Segment (span)
-- Texte de l'entité
-- Étiquette
+#### **Évaluation des Performances**
+- **`evaluate_intersection.py`** : Évaluation basée sur l'intersection des prédictions
+- **`evaluate_union.py`** : Évaluation basée sur l'union des prédictions
+- **`evaluate_union_indiv.py`** : Contribution individuelle à l'union
 
-**Sortie :** `outputs/debug_by_synonym.json`
+#### **Analyse des Chevauchements**
+- **`overlap_by_synonym.py`** : Matrices de Jaccard pour synonymes
+- **`overlap_combinations.py`** : Matrices de Jaccard pour combinaisons
 
-#### `predict_combinations.py`
-Similaire à `predict_by_synonym.py`, ce script prédit des entités en utilisant des combinaisons de synonymes. Il itère sur toutes les combinaisons possibles de synonymes pour chaque type d'entité.
+### 2.  Base de Données de Connaissances (`Conception_de_BD/`)
 
-**Sortie :** `outputs/debug_combinations.json`
+Construction d'une **knowledge database** enrichie comprenant :
+- Relations entre codes d'entités et synonymes
+- Enrichissement automatique via **Gemini Flash 2.0**
+- Structure relationnelle optimisée pour les requêtes NER
 
-#### `evaluate_union.py`
-Évalue la performance des prédictions d'entités basées sur l'**union** des segments (spans) prédits par différentes combinaisons de synonymes. 
+### 3.  Amélioration du Modèle (`changement-encodeur/`)
 
-**Métriques calculées :**
-- Précision
-- Rappel
-- Score F1 (correspondances exactes et partielles utilisant un seuil de Jaccard)
+#### **Extraction des Poids GLiNER**
+- Algorithmes d'extraction des poids des différentes parties du modèle
+- Analyse des composants internes de GLiNER
 
-**Sorties :**
-- `outputs/results_union/metrics_set_union.csv`
-- Graphiques à barres
+#### **Changement d'Encodeur**
+- **Expérimentation 1** : Remplacement par **MPNet**
+- **Expérimentation 2** : Remplacement par **Jina**
+- Évaluation comparative des performances
 
-#### `evaluate_union_indiv.py`
-Évalue également l'union des prédictions, en se concentrant spécifiquement sur la contribution des prédictions de synonymes individuels à l'union globale.
+### 4.  Fine-Tuning (`fine-tuning.ipynb`)
 
-**Sorties :** Métriques et graphiques dans le répertoire `results_union`
+Notebook complet pour le fine-tuning du modèle GLiNER :
+- Préparation des données d'entraînement
+- Configuration des hyperparamètres
+- Processus d'entraînement optimisé
+- Validation et évaluation des performances
 
-#### `evaluate_intersection.py`
-Évalue la performance des prédictions d'entités basées sur l'**intersection** des segments (spans) prédits par différentes combinaisons de synonymes.
+### 5.  Factory de Données (`data_factory/`)
 
-**Métriques calculées :**
-- Précision
-- Rappel
-- Score F1 (correspondances exactes et partielles avec un seuil de Jaccard)
+Scripts de transformation et préparation des données :
+- Struturation de data  pour l'évaluation
+- Préparation pour le fine-tuning
+- Validation et nettoyage des datasets
 
-**Sorties :**
-- `outputs/results_intersection/metrics_set_intersections.csv`
-- Graphiques à barres
+## 📈 Métriques d'Évaluation
 
-#### `overlap_by_synonym.py`
-Analyse le chevauchement (en utilisant l'indice de Jaccard) entre les prédictions d'entités faites par des **synonymes individuels** pour chaque type d'entité.
+### **Métriques Principales**
+- **Précision** : Exactitude des prédictions
+- **Rappel** : Couverture des entités réelles
+- **Score F1** : Moyenne harmonique précision/rappel
 
-**Sorties :**
-- Matrice de similarité de Jaccard
-- Carte de chaleur
-- Répertoire : `outputs/overlap_analysis/synonym_level/`
+### **Méthodes d'Évaluation**
+- **Correspondances exactes** : Matches parfaits des spans
+- **Correspondances partielles** : Utilisation du seuil de Jaccard
+- **Analyse intersection/union** : Stratégies de combinaison des prédictions
 
-#### `overlap_combinations.py`
-Calcule l'indice de Jaccard pour mesurer le chevauchement entre les prédictions dérivées de **différentes combinaisons de synonymes** pour chaque type d'entité.
+### **Analyses de Chevauchement**
+- **Indice de Jaccard** : Mesure de similarité entre prédictions
+- **Analyses par synonymes** : Évaluation individuelle 
 
-**Sorties :**
-- Matrice de Jaccard
-- Carte de chaleur
-- Répertoire : `outputs/overlap_analysis/synonym_COMBINATIONS/combinations/`
+## 🔬 Méthodologies d'Amélioration
 
-### 📁 Répertoire `data/`
+### **1. Optimisation des Synonymes**
+- Analyse de l'impact des différents synonymes
+- Stratégies de combinaison optimales
+- Identification des synonymes les plus performants
 
-#### `fulldata.json`
-Ensemble de données d'entrée utilisé pour la prédiction et l'évaluation des entités.
+### **2. Modification Architecturale**
+- Changement d'encodeur (MPNet, Jina)
+- Extraction et analyse des poids
+- Évaluation comparative des architectures
 
-### 📁 Répertoire `dataf_factory/`
+### **3. Fine-Tuning Spécialisé**
+- Adaptation aux domaines spécifiques
+- Optimisation des hyperparamètres
+- Validation croisée rigoureuse
 
-#### `data.py`
-Script de traitement des données d'entrée pour la prédiction et l'évaluation des entités.
+### **4. Enrichissement par LLM**
+- Génération de relations sémantiques(entre les code d'entitée et les synonymes ) 
+- Enrichissement  de la base de connaissances
+- Etablissement d'un architucture GraphRAG( à faire )  
 
-### 📁 Répertoire `outputs/`
+##  Résultats et Sorties
 
-Ce répertoire stocke tous les fichiers de sortie générés :
+### **Fichiers de Prédictions**
+- `outputs/debug_by_synonym.json` : Prédictions brutes par synonymes
+- `outputs/debug_combinations.json` : Prédictions par combinaisons
 
-- **`debug_by_synonym.json`** : Prédictions brutes pour chaque synonyme individuel
-- **`debug_combinations.json`** : Prédictions brutes pour chaque combinaison de synonymes
-- **`results_intersection/`** : Fichiers CSV des métriques d'évaluation et graphiques à barres pour les évaluations basées sur l'intersection
-- **`results_union/`** : Fichiers CSV des métriques d'évaluation et graphiques à barres pour les évaluations basées sur l'union
-- **`overlap_analysis/`** : Sous-répertoires avec des matrices de Jaccard et des cartes de chaleur illustrant le chevauchement entre les prédictions au niveau des synonymes et des combinaisons
+### **Métriques d'Évaluation**
+- `outputs/results_intersection/` : Métriques et graphiques intersection
+- `outputs/results_union/` : Métriques et graphiques union
 
-## 🚀 Utilisation
+### **Analyses de Chevauchement**
+- `outputs/overlap_analysis/synonym_level/` : Matrices Jaccard synonymes
+- `outputs/overlap_analysis/synonym_COMBINATIONS/` : Matrices combinaisons
 
-[Ajoutez ici les instructions d'installation et d'utilisation du projet]
+## 🛠️ Installation et Utilisation
 
-## 📋 Prérequis
+### **Prérequis**
+```bash
+Python 3.8+
+pip install -r requirements.txt
+```
 
-[Listez ici les dépendances et prérequis nécessaires]
+### **Dépendances Principales**
+```
+torch>=1.9.0
+transformers>=4.20.0
+numpy>=1.21.0
+pandas>=1.3.0
+matplotlib>=3.5.0
+seaborn>=0.11.0
+scikit-learn>=1.0.0
+gliner>=0.1.0
+```
 
-## 🤝 Contribution
+### **Utilisation**
 
-[Ajoutez ici les guidelines pour contribuer au projet]
+#### **1. Évaluation Complète**
+```bash
+python main.evaluation.py
+```
 
-## 📄 Licence
+#### **2. Prédictions Individuelles**
+```bash
+# Prédictions par synonymes
+python src/predict_by_synonym.py
 
-[Ajoutez ici les informations de licence]
+# Prédictions par combinaisons
+python src/predict_combinations.py
+```
+
+#### **3. Analyses Spécifiques**
+```bash
+# Évaluation intersection
+python src/evaluate_intersection.py
+
+# Évaluation union
+python src/evaluate_union.py
+
+# Analyse chevauchements
+python src/overlap_by_synonym.py
+```
+
+#### **4. Fine-Tuning**
+```bash
+jupyter notebook fine-tuning.ipynb
+```
+
+## 📚 Documentation Technique
+
+### **Rapport Complet**
+Le fichier `Rapport de fin d'année.pdf` contient :
+
+#### **État de l'Art**
+- Revue complète des modèles NER
+- Positionnement de GLiNER
+- Comparaisons avec les autres modèles de NER.
+
+#### **Architecture GLiNER**
+- Décomposition fonctionnelle détaillée
+- Analyse des composants internes
+
+#### **Méthodologies d'Évaluation**
+- Protocoles  d'Évaluation
+- Validation des métriques
+- Stratégies de test robustes
+
+#### **Analyses Quantitatives**
+- Résultats détaillés par métrique
+- Comparaisons statistiques
+
+#### **Analyses Qualitatives**
+- Étude des erreurs
+- Cas d'usage spécifiques
+- Recommandations d'amélioration
+
+#### **Méthodologies d'Amélioration**
+- Stratégies de fine-tuning
+- Enrichissement sémantique
+
+
+##  Contribution
+
+Les contributions sont les bienvenues ! Merci de :
+1. Fork le projet
+2. Créer une branche feature
+3. Commiter vos changements
+4. Ouvrir une Pull Request
+
+
+## 👨‍💻 Auteur
+
+**Achraf** - [GitHub](https://github.com/achraf99999)
+
+---
+
+*Ce projet a été développé dans le cadre d'un stage de recherche sur l'amélioration des modèles de reconnaissance d'entités nommées à l'ISIS sous encadremant de M.Yohann Chasseray .*

@@ -1,0 +1,62 @@
+entity_type,combo,precision,recall,f1,TP,FP,FN
+DISO,disease__disorder,0.981869,0.316547,0.478749,704,13,1520
+DISO,disease__syndrome,0.980966,0.301259,0.460956,670,13,1554
+DISO,disease__pathology,0.953947,0.065198,0.122054,145,7,2079
+DISO,disorder__syndrome,0.983425,0.320144,0.483039,712,12,1512
+DISO,disorder__pathology,0.954887,0.057104,0.107764,127,6,2097
+DISO,syndrome__pathology,0.95,0.068345,0.127517,152,8,2072
+DISO,disease__disorder__syndrome,0.981791,0.290917,0.448838,647,12,1577
+DISO,disease__disorder__pathology,0.952756,0.054406,0.102935,121,6,2103
+DISO,disease__syndrome__pathology,0.949275,0.058903,0.110923,131,7,2093
+DISO,disorder__syndrome__pathology,0.953846,0.055755,0.105353,124,6,2100
+DISO,disease__disorder__syndrome__pathology,0.951613,0.053058,0.100511,118,6,2106
+CHEM,chemical__compound,1.0,0.245873,0.3947,283,0,868
+CHEM,chemical__substance,1.0,0.091225,0.167197,105,0,1046
+CHEM,chemical__medication,1.0,0.132059,0.233308,152,0,999
+CHEM,chemical__drug,1.0,0.156386,0.270473,180,0,971
+CHEM,compound__substance,1.0,0.096438,0.175911,111,0,1040
+CHEM,compound__medication,1.0,0.191138,0.320934,220,0,931
+CHEM,compound__drug,1.0,0.218071,0.35806,251,0,900
+CHEM,substance__medication,0.983607,0.052129,0.09901,60,1,1091
+CHEM,substance__drug,0.987805,0.070374,0.131387,81,1,1070
+CHEM,medication__drug,0.986737,0.323197,0.486911,372,5,779
+CHEM,chemical__compound__substance,1.0,0.090356,0.165737,104,0,1047
+CHEM,chemical__compound__medication,1.0,0.132059,0.233308,152,0,999
+CHEM,chemical__compound__drug,1.0,0.156386,0.270473,180,0,971
+CHEM,chemical__substance__medication,1.0,0.042572,0.081667,49,0,1102
+CHEM,chemical__substance__drug,1.0,0.060817,0.11466,70,0,1081
+CHEM,chemical__medication__drug,1.0,0.132059,0.233308,152,0,999
+CHEM,compound__substance__medication,1.0,0.046047,0.08804,53,0,1098
+CHEM,compound__substance__drug,1.0,0.064292,0.120816,74,0,1077
+CHEM,compound__medication__drug,1.0,0.191138,0.320934,220,0,931
+CHEM,substance__medication__drug,0.983607,0.052129,0.09901,60,1,1091
+CHEM,chemical__compound__substance__medication,1.0,0.042572,0.081667,49,0,1102
+CHEM,chemical__compound__substance__drug,1.0,0.060817,0.11466,70,0,1081
+CHEM,chemical__compound__medication__drug,1.0,0.132059,0.233308,152,0,999
+CHEM,chemical__substance__medication__drug,1.0,0.042572,0.081667,49,0,1102
+CHEM,compound__substance__medication__drug,1.0,0.046047,0.08804,53,0,1098
+CHEM,chemical__compound__substance__medication__drug,1.0,0.042572,0.081667,49,0,1102
+DEVICE,device__apparatus,0.0,0.0,0.0,0,1,48
+DEVICE,device__equipment,0.0,0.0,0.0,0,2,48
+DEVICE,apparatus__equipment,0.5,0.020833,0.04,1,1,47
+DEVICE,device__apparatus__equipment,0.0,0.0,0.0,0,1,48
+LABPROC,procedure__test,0.712644,0.179191,0.286374,62,25,284
+LABPROC,procedure__examination,0.637681,0.127168,0.212048,44,25,302
+LABPROC,test__examination,0.62069,0.104046,0.178218,36,22,310
+LABPROC,procedure__test__examination,0.653061,0.092486,0.162025,32,17,314
+PHYS,physiology__biological process,0.689655,0.025608,0.049383,20,9,761
+PHYS,physiology__bodily function,0.805556,0.037132,0.070991,29,7,752
+PHYS,biological process__bodily function,0.628571,0.028169,0.053922,22,13,759
+PHYS,physiology__biological process__bodily function,0.695652,0.020487,0.039801,16,7,765
+ANATOMY,anatomy__body part,0.982196,0.183787,0.309635,331,6,1470
+ANATOMY,anatomy__organ,0.986667,0.164353,0.281771,296,4,1505
+ANATOMY,body part__organ,0.989796,0.161577,0.277804,291,3,1510
+ANATOMY,anatomy__body part__organ,0.989091,0.151027,0.262042,272,3,1529
+FINDING,finding__observation,0.0,0.0,0.0,0,0,808
+FINDING,finding__result,0.0,0.0,0.0,0,4,808
+FINDING,observation__result,0.0,0.0,0.0,0,0,808
+FINDING,finding__observation__result,0.0,0.0,0.0,0,0,808
+INJURY_POISONING,injury__poisoning,0.675,0.243243,0.357616,27,13,84
+INJURY_POISONING,injury__tension of ligaments,0.0,0.0,0.0,0,0,111
+INJURY_POISONING,poisoning__tension of ligaments,0.0,0.0,0.0,0,0,111
+INJURY_POISONING,injury__poisoning__tension of ligaments,0.0,0.0,0.0,0,0,111

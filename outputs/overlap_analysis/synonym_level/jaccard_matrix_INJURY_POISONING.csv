@@ -1,0 +1,4 @@
+,injury,poisoning,tension of ligaments
+injury,1.0,0.15810276679841898,0.0
+poisoning,0.15810276679841898,1.0,0.0
+tension of ligaments,0.0,0.0,1.0

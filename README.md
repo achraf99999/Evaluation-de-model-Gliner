@@ -12,7 +12,7 @@ Ce projet présente une **évaluation complète et des méthodologies d'amélior
 - **Évaluation multi-dimensionnelle** du modèle GLiNER avec différentes stratégies de synonymes
 - **Analyse comparative** des performances (intersection vs union des prédictions)
 - **Amélioration du modèle** via fine-tuning et changement d'encodeur
-- **Construction d'une base de données** de connaissances enrichie par LLM
+- **Construction d'une base de données** de connaissances enrichie par un LLM
 - **Documentation complète** des méthodologies et résultats
 
 ##  Structure du Projet

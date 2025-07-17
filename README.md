@@ -1,10 +1,9 @@
-# 🔬 Projet d'Évaluation et d'Amélioration du Modèle GLiNER
+#  Projet d'Évaluation et d'Amélioration du Modèle GLiNER
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/Python-3.9.11+-blue.svg)](https://www.python.org/downloads/)
 [![GLiNER](https://img.shields.io/badge/GLiNER-Model-green.svg)](https://github.com/urchade/GLiNER)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 📋 Description
+##  Description
 
 Ce projet présente une **évaluation complète et des méthodologies d'amélioration** pour le modèle GLiNER (Generalist and Lightweight model for Named Entity Recognition). Il comprend des analyses quantitatives et qualitatives approfondies, des techniques d'amélioration du modèle, et la construction d'une base de données de connaissances enrichie.
 
